@@ -1,0 +1,5 @@
+{
+  "name": "ts-music-module",
+  "description": "An AI-powered assistant to generate atmospheric playlist ideas for your TTRPG sessions in Foundry VTT. Describe a scene, and get curated music suggestions instantly.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,5 @@
+{
+  "TS_MUSIC_MODULE.setting_playbackRate_name": "Global Playback Rate",
+  "TS_MUSIC_MODULE.setting_playbackRate_hint": "Controls the playback speed of all playlist music.",
+  "TS_MUSIC_MODULE.label_playbackSpeed": "Playback Speed"
+}

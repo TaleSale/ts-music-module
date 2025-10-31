@@ -1,0 +1,39 @@
+{
+  "id": "ts-music-module",
+  "title": "TS Music Module",
+  "description": "Adds playback speed controls to the playlist interface to speed up or slow down music.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "authors": [
+    {
+      "name": "TaleSale"
+    },
+    {
+      "name": "Gemini 2.5 Pro"
+    }
+  ],
+  "esmodules": [
+    "main.js"
+  ],
+  "styles": [
+    "styles.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ru",
+      "name": "Russian",
+      "path": "lang/ru.json"
+    }
+  ],
+  "url": "https://github.com/TaleSale/ts-music-module",
+  "manifest": "https://raw.githubusercontent.com/TaleSale/ts-music-module/main/module.json",
+  "download": "https://raw.githubusercontent.com/TaleSale/ts-music-module/archive/refs/heads/main.zip"
+}

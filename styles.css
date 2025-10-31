@@ -1,0 +1,37 @@
+.ts-music-module-playback-controls {
+    display: flex;
+    align-items: center;
+    padding: 0 5px 5px;
+    border-bottom: 1px solid var(--color-border-light-2);
+    margin-bottom: 5px;
+}
+
+.ts-music-module-playback-controls label {
+    flex: 1;
+    margin: 0;
+    line-height: 24px;
+    font-size: var(--font-size-14);
+}
+
+.ts-music-module-playback-controls .form-fields {
+    flex: 2;
+    display: flex;
+    align-items: center;
+}
+
+.ts-music-module-playback-controls input[type="range"] {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+.ts-music-module-playback-controls .playback-rate-display {
+    min-width: 45px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--color-text-dark-primary);
+    background: rgba(0,0,0,0.1);
+    border: 1px solid var(--color-border-light-tertiary);
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-size: var(--font-size-12);
+}
