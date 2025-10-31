@@ -35,5 +35,5 @@
   ],
   "url": "https://github.com/TaleSale/ts-music-module",
   "manifest": "https://raw.githubusercontent.com/TaleSale/ts-music-module/main/module.json",
-  "download": "https://github.com/TaleSale/ts-music-module/archive/refs/heads/main.zip"
+  "download": "https://raw.githubusercontent.com/TaleSale/ts-music-module/archive/refs/heads/main.zip"
 }

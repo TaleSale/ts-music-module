@@ -1,10 +1,9 @@
-<div class="form-group ts-music-module-playback-controls">
-    <label for="ts-music-module-playback-slider">
-        <i class="fas fa-running"></i> {{localize "TS_MUSIC_MODULE.label_playbackSpeed"}}
-    </label>
-    <div class="form-fields">
-        <input type="range" class="ts-music-module-playback-slider" name="playbackRate"
-               value="{{rate}}" min="0.5" max="2.0" step="0.05">
-        <span class="playback-rate-display">{{rate}}x</span>
-    </div>
+<div class="ts-music-module-playlist-controls">
+    <button type="button" class="control-btn ts-speed-decrease" title="{{localize 'TS_MUSIC_MODULE.decreaseSpeedHint'}}">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <span class="ts-current-speed">1.00x</span>
+    <button type="button" class="control-btn ts-speed-increase" title="{{localize 'TS_MUSIC_MODULE.increaseSpeedHint'}}">
+        <i class="fas fa-chevron-right"></i>
+    </button>
 </div>

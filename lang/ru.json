@@ -1,5 +1,6 @@
 {
   "TS_MUSIC_MODULE.setting_playbackRate_name": "Общая скорость воспроизведения",
   "TS_MUSIC_MODULE.setting_playbackRate_hint": "Управляет скоростью воспроизведения всей музыки из плейлистов.",
-  "TS_MUSIC_MODULE.label_playbackSpeed": "Скорость"
+  "TS_MUSIC_MODULE.decreaseSpeedHint": "Уменьшить скорость воспроизведения",
+  "TS_MUSIC_MODULE.increaseSpeedHint": "Увеличить скорость воспроизведения"
 }

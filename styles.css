@@ -1,37 +1,49 @@
-.ts-music-module-playback-controls {
-    display: flex;
-    align-items: center;
-    padding: 0 5px 5px;
-    border-bottom: 1px solid var(--color-border-light-2);
-    margin-bottom: 5px;
-}
-
-.ts-music-module-playback-controls label {
+/* 
+  Это правило нацелено на ползунок громкости, когда в том же контейнере
+  присутствуют элементы управления скоростью. Оно уменьшает способность ползунка
+  растягиваться, освобождая место для новых элементов и предотвращая наложение.
+*/
+li.sound .sound-playback:has(.ts-music-module-playlist-controls) .sound-volume {
     flex: 1;
-    margin: 0;
-    line-height: 24px;
-    font-size: var(--font-size-14);
 }
 
-.ts-music-module-playback-controls .form-fields {
-    flex: 2;
+/* Основной контейнер для элементов управления скоростью с настроенными отступами. */
+.ts-music-module-playlist-controls {
     display: flex;
     align-items: center;
+    gap: 2px; /* Уменьшенный зазор для более плотной верстки. */
+    margin: 0 5px; /* Настроенный отступ для лучшего разделения с громкостью/кнопкой play. */
+    flex-shrink: 0; /* Предотвращает сжатие элементов управления. */
 }
 
-.ts-music-module-playback-controls input[type="range"] {
-    flex-grow: 1;
-    margin-right: 8px;
-}
-
-.ts-music-module-playback-controls .playback-rate-display {
-    min-width: 45px;
+/* Стиль для кнопок увеличения/уменьшения. */
+.ts-music-module-playlist-controls .control-btn {
+    flex: 0 0 20px;
+    height: 24px;
+    line-height: 24px;
     text-align: center;
-    font-weight: bold;
+    padding: 0;
+    border: none; /* Убираем рамку, чтобы кнопка выглядела как иконка. */
+    background: none; /* Убираем фон. */
     color: var(--color-text-dark-primary);
-    background: rgba(0,0,0,0.1);
+}
+
+.ts-music-module-playlist-controls .control-btn:hover {
+    color: var(--color-text-dark-highlight);
+    text-shadow: 0 0 8px var(--color-shadow-highlight);
+}
+
+/* Стиль для текстового дисплея, показывающего текущую скорость, стал более компактным. */
+.ts-music-module-playlist-controls .ts-current-speed {
+    flex: 0 0 38px;
+    font-weight: bold;
+    text-align: center;
+    font-size: var(--font-size-12);
+    color: var(--color-text-dark-primary);
+    cursor: default;
     border: 1px solid var(--color-border-light-tertiary);
     border-radius: 3px;
-    padding: 2px 4px;
-    font-size: var(--font-size-12);
+    background: rgba(0,0,0,0.05);
+    padding: 2px 0;
+    line-height: 18px; /* Скорректировано под padding */
 }

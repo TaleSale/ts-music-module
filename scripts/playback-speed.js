@@ -27,13 +27,13 @@ export class PlaybackSpeed {
      * @param {number} rate - Скорость воспроизведения (например, 1.0 для нормальной).
      */
     static applyRateToPlayingSounds(rate) {
-        game.playlists.playing.forEach(playlist => {
-            playlist.sounds.forEach(sound => {
-                if (sound.playing && sound.howl) {
-                    sound.howl.rate(rate);
-                }
-            });
-        });
+        // Это более прямой и надежный способ получить все активные звуки.
+        for (const sound of game.audio.sounds) {
+            // Убеждаемся, что изменяем только звуки, которые являются частью плейлиста и проигрываются.
+            if (sound.playlistSound?.playing && sound.howl) {
+                sound.howl.rate(rate);
+            }
+        }
     }
 }
 
@@ -55,29 +55,69 @@ Hooks.on('playSound', (sound) => {
     }
 });
 
-// Хук, который срабатывает при рендеринге панели управления плейлистами.
-Hooks.on('renderPlaylistControls', async (controls, html) => {
+// Хук, который срабатывает при рендеринге директории плейлистов.
+Hooks.on('renderPlaylistDirectory', (app, html) => {
+    const jqHtml = $(html);
     const rate = game.settings.get(PlaybackSpeed.MODULE_ID, PlaybackSpeed.SETTING_PLAYBACK_RATE);
-    const controlHtml = await renderTemplate(`modules/${PlaybackSpeed.MODULE_ID}/templates/playback-control.html`, {
-        rate: rate.toFixed(2)
-    });
 
-    // Внедряем наш новый HTML-контрол после кнопок действий плейлиста.
-    html.find('.playlist-actions').after(controlHtml);
+    // Используем более общий селектор для поиска всех звуковых дорожек.
+    jqHtml.find('li.sound').each(async function() {
+        const soundLi = $(this);
+        // Цель для вставки — кнопка play/pause внутри .sound-playback.
+        const playPauseButton = soundLi.find('.sound-playback .sound-control[data-action="soundPause"], .sound-playback .sound-control[data-action="soundPlay"]');
 
-    const slider = html.find('.ts-music-module-playback-slider');
-    const rateDisplay = html.find('.playback-rate-display');
+        // Если нашли кнопку play/pause и наши контролы еще не добавлены.
+        if (playPauseButton.length > 0 && soundLi.find('.ts-music-module-playlist-controls').length === 0) {
+            
+            const controlHtmlString = await renderTemplate(`modules/${PlaybackSpeed.MODULE_ID}/templates/playback-control.html`, {});
+            const controlHtml = $(controlHtmlString);
+            
+            // Вставляем контролы перед кнопкой play/pause.
+            playPauseButton.before(controlHtml);
+            
+            // Устанавливаем начальное значение скорости в текстовом поле.
+            controlHtml.find('.ts-current-speed').text(`${rate.toFixed(2)}x`);
 
-    // Обновляем текстовое поле в реальном времени при перемещении ползунка.
-    slider.on('input', (event) => {
-        const newRate = parseFloat(event.currentTarget.value);
-        rateDisplay.text(newRate.toFixed(2) + 'x');
-    });
+            // Обработчик для уменьшения скорости.
+            controlHtml.find('.ts-speed-decrease').on('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                changeSpeed(-0.25);
+            });
 
-    // Когда пользователь отпускает ползунок, сохраняем настройку и обновляем проигрываемые треки.
-    slider.on('change', (event) => {
-        const newRate = parseFloat(event.currentTarget.value);
-        game.settings.set(PlaybackSpeed.MODULE_ID, PlaybackSpeed.SETTING_PLAYBACK_RATE, newRate);
-        PlaybackSpeed.applyRateToPlayingSounds(newRate);
+            // Обработчик для увеличения скорости.
+            controlHtml.find('.ts-speed-increase').on('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                changeSpeed(0.25);
+            });
+        }
     });
 });
+
+/**
+ * Изменяет глобальную скорость воспроизведения.
+ * @param {number} delta - Величина, на которую нужно изменить скорость (например, 0.25 или -0.25).
+ */
+function changeSpeed(delta) {
+    const settingsKey = `${PlaybackSpeed.MODULE_ID}.${PlaybackSpeed.SETTING_PLAYBACK_RATE}`;
+    const currentRate = game.settings.get(PlaybackSpeed.MODULE_ID, PlaybackSpeed.SETTING_PLAYBACK_RATE);
+    const settingsConfig = game.settings.settings.get(settingsKey);
+    const { min, max } = settingsConfig.range;
+
+    // Рассчитываем новую скорость и ограничиваем ее в пределах min/max.
+    let newRate = parseFloat((currentRate + delta).toFixed(2));
+    // Используем Math.clamp (современно) вместо Math.clamped (устарело).
+    newRate = Math.clamp(newRate, min, max);
+
+    if (newRate !== currentRate) {
+        // Обновляем настройку.
+        game.settings.set(PlaybackSpeed.MODULE_ID, PlaybackSpeed.SETTING_PLAYBACK_RATE, newRate);
+        
+        // Применяем новую скорость к текущим трекам.
+        PlaybackSpeed.applyRateToPlayingSounds(newRate);
+        
+        // Обновляем текст во всех видимых элементах управления скоростью.
+        $('.ts-current-speed').text(`${newRate.toFixed(2)}x`);
+    }
+}
